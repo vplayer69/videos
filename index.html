@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d18">
+  <title>VPlay — Watch & Discover</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#090d18;--panel:#111827;--panel2:#151f31;--text:#f5f7fb;--muted:#98a5b8;--line:rgba(255,255,255,.08);--accent:#7657ff;--accent2:#a78bfa}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+    button,input{font:inherit}button{cursor:pointer}.shell{max-width:1240px;margin:auto;padding:0 24px}
+    header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;position:sticky;top:0;z-index:20;background:rgba(9,13,24,.88);backdrop-filter:blur(18px)}
+    .nav{display:flex;align-items:center;justify-content:space-between;width:100%;gap:20px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:white;font:800 25px Outfit,sans-serif;letter-spacing:-1px}
+    .brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#967bff,#5835e8);display:grid;place-items:center;box-shadow:0 7px 24px #7657ff55}
+    .brand-mark svg{width:17px;margin-left:2px}.nav-links{display:flex;gap:28px;align-items:center}.nav-links a{color:#aab4c5;text-decoration:none;font-size:14px;font-weight:600}.nav-links a:hover,.nav-links a.active{color:white}
+    .premium-nav{border:0;border-radius:10px;padding:11px 17px;color:white;font-weight:700;background:linear-gradient(135deg,#8b6cff,#603fe8);box-shadow:0 6px 20px #7657ff40}
+    .hero{padding:65px 0 40px;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:35px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#b8aaff;background:#7657ff1b;border:1px solid #7657ff44;padding:7px 11px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+    .dot{width:7px;height:7px;background:#9b82ff;border-radius:50%;box-shadow:0 0 12px #9b82ff}
+    h1{font:800 clamp(38px,5vw,64px)/1.04 Outfit,sans-serif;letter-spacing:-2.4px;margin:20px 0 15px;max-width:650px}h1 span{background:linear-gradient(90deg,#a995ff,#6e9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{color:var(--muted);font-size:16px;line-height:1.8;max-width:540px;margin:0}
+    .hero-art{min-height:235px;border-radius:24px;position:relative;overflow:hidden;background:radial-gradient(circle at 70% 25%,#8a6cff88,transparent 34%),radial-gradient(circle at 30% 80%,#2476d866,transparent 40%),linear-gradient(135deg,#1c2540,#11182a);border:1px solid #ffffff14;display:grid;place-items:center}
+    .hero-art:before,.hero-art:after{content:"";position:absolute;border:1px solid #ffffff18;border-radius:50%;width:260px;height:260px}.hero-art:after{width:350px;height:350px}
+    .play-orb{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;background:#ffffff20;border:1px solid #ffffff50;backdrop-filter:blur(8px);z-index:1;box-shadow:0 0 70px #987dff55}.play-orb svg{width:25px;margin-left:4px}
+    .art-tag{position:absolute;bottom:20px;left:22px;color:#d7d9e9;font-size:12px;letter-spacing:2px;font-weight:700}
+    .tabs-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0 23px;flex-wrap:wrap}
+    .tabs{display:flex;gap:8px;background:#111827;padding:5px;border:1px solid var(--line);border-radius:13px}
+    .tab{border:0;background:transparent;color:#9ba8bb;padding:11px 18px;border-radius:9px;font-weight:700;font-size:13px}.tab.active{background:linear-gradient(135deg,#8063ff,#6040e7);color:white;box-shadow:0 5px 18px #7657ff44}
+    .search{position:relative;width:min(100%,280px)}.search input{width:100%;border:1px solid var(--line);background:#111827;color:white;border-radius:11px;padding:12px 14px 12px 40px;outline:none}.search input:focus{border-color:#8063ff}.search svg{position:absolute;left:13px;top:13px;width:17px;color:#8190a7}
+
+    .premium-shelf{margin:2px 0 28px}
+    .premium-shelf-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+    .premium-shelf-head strong{font:700 17px Outfit;display:flex;align-items:center;gap:8px}
+    .premium-shelf-head strong span{color:#b79cff}
+    .premium-shelf-head small{color:var(--muted);font-size:11px}
+    .premium-track{display:flex;gap:13px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:thin;scrollbar-color:#5944a5 transparent}
+    .premium-tile{position:relative;flex:0 0 190px;height:112px;border:1px solid #9a7bff55;border-radius:13px;overflow:hidden;background:linear-gradient(135deg,#33265e,#17243b);cursor:pointer;text-align:left;padding:0;color:white;box-shadow:0 7px 22px #0002;transition:transform .2s,border-color .2s}
+    .premium-tile:hover{transform:translateY(-3px);border-color:#b9a5ff}
+    .premium-tile img{width:100%;height:100%;object-fit:cover;display:block;opacity:.78}
+    .premium-tile:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#080914e8 0%,#08091416 75%)}
+    .premium-tile .premium-count{position:absolute;z-index:2;left:11px;bottom:10px;font-size:11px;font-weight:700;text-shadow:0 1px 5px #000}
+    .premium-crown{position:absolute;z-index:3;right:9px;top:9px;width:27px;height:27px;border-radius:9px;background:#8b6cffed;display:grid;place-items:center;box-shadow:0 3px 12px #0005}
+    .premium-crown svg{width:15px;height:15px;fill:#fff}
+    .premium-more{flex-basis:112px;background:linear-gradient(135deg,#272044,#151d31);border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;text-align:center}
+    .premium-more .more-arrow{width:29px;height:29px;border-radius:50%;background:#8b6cff;display:grid;place-items:center;font-size:19px}
+    .premium-more .premium-count{position:static;font-size:12px}
+    .premium-loading{color:var(--muted);font-size:12px;padding:16px 4px}
+    @media(max-width:560px){.premium-shelf{margin:0 0 22px}.premium-shelf-head strong{font-size:15px}.premium-tile{flex-basis:158px;height:96px}.premium-more{flex-basis:92px}}
+
+    .section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}.section-head h2{font:700 24px Outfit;margin:0 0 5px}.section-head p{margin:0;color:var(--muted);font-size:13px}.count{color:#a99aff;font-size:12px;font-weight:700}
+    .video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding-bottom:70px}
+    .video-card{background:var(--panel);border:1px solid var(--line);border-radius:17px;overflow:hidden;transition:transform .22s,border-color .22s;cursor:pointer}.video-card:hover{transform:translateY(-5px);border-color:#8063ff88}
+    .thumb{height:190px;position:relative;overflow:hidden;background:linear-gradient(135deg,#263858,#5c4c9b);display:grid;place-items:center}
+    .thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.thumb-fallback{font:800 44px Outfit;color:#ffffff55}
+    .thumb:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#080b13a8)}
+    .play-small{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#ffffffdf;display:grid;place-items:center;opacity:0;transition:.2s}.video-card:hover .play-small{opacity:1}.play-small svg{width:17px;fill:#4c36c9;margin-left:3px}
+    .duration{position:absolute;right:12px;bottom:12px;z-index:3;background:#080b13d9;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:700}
+    .card-body{padding:16px}.category{color:#a998ff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.1px}.card-body h3{font:700 17px Outfit;margin:8px 0 7px;line-height:1.35}.card-body p{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 14px;min-height:38px}.card-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;color:#9ba8bb;font-size:11px}.watch-link{color:#c3b7ff;font-weight:700}
+    .empty{grid-column:1/-1;text-align:center;padding:55px 15px;color:var(--muted);background:var(--panel);border:1px dashed #ffffff20;border-radius:16px}
+    .premium-panel{display:none;margin:5px 0 70px;border:1px solid #8e72ff55;border-radius:22px;padding:32px;background:radial-gradient(circle at 90% 10%,#7855ff30,transparent 35%),linear-gradient(120deg,#171d32,#111827)}
+    .premium-panel.show{display:flex;align-items:center;justify-content:space-between;gap:24px}.premium-panel h2{font:700 27px Outfit;margin:0 0 8px}.premium-panel p{color:var(--muted);margin:0;line-height:1.7;font-size:14px}.premium-btn{white-space:nowrap;border:0;border-radius:11px;padding:14px 20px;color:white;font-weight:800;background:linear-gradient(135deg,#a18aff,#6545ec);box-shadow:0 8px 25px #7657ff55}
+    footer{border-top:1px solid var(--line);padding:25px 0;color:#77849a;font-size:12px}.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+    .modal{display:none;position:fixed;inset:0;z-index:50;background:#03050bdc;backdrop-filter:blur(10px);padding:20px;align-items:center;justify-content:center}.modal.open{display:flex}.modal-box{width:min(900px,100%);background:#101827;border:1px solid #ffffff20;border-radius:18px;overflow:hidden;box-shadow:0 25px 90px #0009}.modal-top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px}.modal-top strong{font:700 16px Outfit}.close{border:0;background:#ffffff12;color:white;width:34px;height:34px;border-radius:9px;font-size:20px}.player{width:100%;aspect-ratio:16/9;background:#000;display:block}.modal-note{padding:12px 18px;color:#9ba8bb;font-size:12px}
+    @media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:45px}.hero-art{min-height:180px}.video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.thumb{height:175px}}
+    @media(max-width:560px){.shell{padding:0 15px}header{height:64px}.brand{font-size:22px}.nav-links{gap:12px}.nav-links a{display:none}.premium-nav{padding:10px 12px;font-size:12px}.hero{padding:38px 0 27px;gap:23px}h1{font-size:42px;letter-spacing:-1.8px;margin:16px 0 12px}.hero p{font-size:14px}.hero-art{min-height:145px;border-radius:18px}.play-orb{width:62px;height:62px}.tabs-row{align-items:stretch}.tabs{width:100%;display:grid;grid-template-columns:1fr 1fr}.tab{padding:11px 7px}.search{width:100%}.section-head h2{font-size:21px}.video-grid{grid-template-columns:1fr 1fr;gap:11px}.thumb{height:125px}.card-body{padding:11px}.card-body h3{font-size:14px;margin:6px 0}.card-body p{font-size:11px;min-height:50px;margin-bottom:10px}.card-foot{font-size:10px}.play-small{width:38px;height:38px;opacity:1}.premium-panel.show{display:block;padding:23px}.premium-panel h2{font-size:23px}.premium-btn{margin-top:18px;width:100%}.duration{font-size:10px;right:7px;bottom:7px}.category{font-size:9px}}
+    @media(max-width:360px){.video-grid{grid-template-columns:1fr}.thumb{height:180px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="shell nav">
+    <a class="brand" href="#"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5.5v13l11-6.5z"/></svg></span>VPlay</a>
+    <nav class="nav-links"><a class="active" href="#videos">Explore</a><a href="#about">About</a></nav>
+    <button class="premium-nav" onclick="openPremium()">✦ Get Premium</button>
+  </div>
+</header>
+<main class="shell">
+  <section class="hero">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> YOUR VIDEO DESTINATION</div>
+      <h1>Watch what you <span>love.</span></h1>
+      <p>Discover hand-picked videos, learn something new and enjoy your favourite content — all in one place.</p>
+    </div>
+    <div class="hero-art"><div class="play-orb"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div><div class="art-tag">STREAM • LEARN • ENJOY</div></div>
+  </section>
+
+  <section id="videos">
+    <div class="tabs-row">
+      <div class="tabs">
+        <button class="tab active" id="freeTab" onclick="showFree()">▶ Free Videos</button>
+        <button class="tab" id="premiumTab" onclick="showPremium()">✦ Premium</button>
+      </div>
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="searchInput" type="search" placeholder="Search videos..." oninput="renderVideos()"></label>
+    </div>
+    <div class="premium-shelf" id="premiumShelf">
+      <div class="premium-shelf-head">
+        <strong><span>✦</span> Premium collections</strong>
+        <small>Exclusive videos</small>
+      </div>
+      <div class="premium-track" id="premiumTrack">
+        <div class="premium-loading">Loading premium collections...</div>
+      </div>
+    </div>
+    <div class="section-head"><div><h2 id="listTitle">Free videos</h2><p id="listSubtitle">Enjoy all videos available for free.</p></div><span class="count" id="videoCount"></span></div>
+    <div class="video-grid" id="videoGrid"></div>
+  </section>
+
+  <section class="premium-panel" id="premiumPanel">
+    <div><h2>Unlock the full experience ✦</h2><p>Get access to exclusive premium content and enjoy more with VPlay.</p></div>
+    <button class="premium-btn" onclick="goPremium()">Explore Premium <span>→</span></button>
+  </section>
+  <section id="about" style="padding:0 0 45px;color:#8794a9;font-size:13px;line-height:1.8">
+    <strong style="color:#dce2ee;font:700 16px Outfit">About VPlay</strong><br>
+    Your personal place to discover and watch videos. Browse the free collection or visit the premium section for exclusive content.
+  </section>
+</main>
+<footer><div class="shell footer-inner"><span>© <span id="year"></span> VPlay. All rights reserved.</span><span>Made for a better viewing experience.</span></div></footer>
+
+<div class="modal" id="videoModal" onclick="if(event.target===this)closePlayer()">
+  <div class="modal-box">
+    <div class="modal-top"><strong id="modalTitle">Now playing</strong><button class="close" onclick="closePlayer()" aria-label="Close">×</button></div>
+    <video class="player" id="videoPlayer" controls playsinline controlsList="nodownload"></video>
+    <div class="modal-note">Enjoy watching. Use the close button to return to the video list.</div>
+  </div>
+</div>
+
+<!-- Firebase Realtime Database SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+/* ==========================================
+   VPLAY + FIREBASE REALTIME DATABASE
+   Database path: /vplayer/videos
+   ========================================== */
+
+/* 1) নিজের Firebase project-এর config এখানে বসাও */
+const firebaseConfig = {
+  apiKey: "AIzaSyCylaiKXjXOS9Cfk9O1fcpDGogdY7_gEcA",
+  authDomain: "solo-37a1b.firebaseapp.com",
+  databaseURL: "https://vplayer.firebaseio.com/",
+  projectId: "solo-37a1b",
+  storageBucket: "solo-37a1b.firebasestorage.app",
+  messagingSenderId: "460941218315",
+  appId: "1:460941218315:web:c9dde6fe291dbdcd06ad0e",
+  measurementId: "G-N6705R9EMZ"
+};
+
+/* 2) Premium page-এর URL এখানে বসাও */
+const PREMIUM_LINK = "https://example.com/premium";
+
+/* Firebase initialize */
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+const videosRef = database.ref("vplayer/videos");
+
+const premiumThumbRef = database.ref("vplayer/primiumThumb");
+let premiumThumbs = [];
+
+function loadPremiumThumbs() {
+  const track = document.getElementById("premiumTrack");
+  premiumThumbRef.on("value", snapshot => {
+    const data = snapshot.val() || {};
+    premiumThumbs = Object.entries(data).map(([id, item]) => ({
+      id,
+      image: item && item.image ? item.image : "",
+      totalVideos: Number(item && item.totalVideos) || 0
+    })).filter(item => item.image);
+    renderPremiumThumbs();
+  }, error => {
+    console.error("Firebase premium thumbnail read error:", error);
+    track.innerHTML = '<div class="premium-loading">Could not load premium collections.</div>';
+  });
+}
+
+function renderPremiumThumbs() {
+  const track = document.getElementById("premiumTrack");
+  const tiles = premiumThumbs.map(item => `
+    <button class="premium-tile" type="button" onclick="goPremium()" aria-label="Open premium collection">
+      <img src="${escapeHTML(item.image)}" alt="Premium collection" loading="lazy"
+           onerror="this.style.display='none'">
+      <span class="premium-crown" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 19h14l1-10-5 4-3-7-3 7-5-4 1 10zm1.5 2h11v1h-11z"/></svg>
+      </span>
+      <span class="premium-count">${item.totalVideos} videos</span>
+    </button>
+  `).join("");
+  track.innerHTML = tiles + `
+    <button class="premium-tile premium-more" type="button" onclick="goPremium()">
+      <span class="more-arrow">→</span>
+      <span class="premium-count">More</span>
+    </button>
+  `;
+}
+
+
+let videos = [];
+let currentTab = "free";
+const grid = document.getElementById("videoGrid");
+
+function setLoading(message) {
+  grid.innerHTML = `<div class="empty">${escapeHTML(message)}</div>`;
+}
+
+/* Firebase থেকে live video list load হবে */
+function loadVideos() {
+  setLoading("Loading videos...");
+  videosRef.on("value", snapshot => {
+    const data = snapshot.val() || {};
+    videos = Object.entries(data).map(([id, item]) => ({
+      id,
+      title: item.title || "Untitled video",
+      category: item.category || "Video",
+      video: item.video || "",
+      thumb: item.thumb || "",
+      description: item.description || "",
+      duration: item.duration || ""
+    })).filter(item => item.video);
+
+    renderVideos();
+  }, error => {
+    console.error("Firebase read error:", error);
+    setLoading("Could not load videos. Please check your Firebase configuration and database rules.");
+    document.getElementById("videoCount").textContent = "";
+  });
+}
+
+function renderVideos() {
+  const term = document.getElementById("searchInput").value.trim().toLowerCase();
+
+  if (currentTab === "premium") {
+    grid.innerHTML = `<div class="empty">✦ <strong>Premium videos are exclusive.</strong><br><br>Visit the premium page to explore all premium content.<br><br><button class="premium-btn" onclick="goPremium()">Go to Premium →</button></div>`;
+    document.getElementById("videoCount").textContent = "EXCLUSIVE";
+    return;
+  }
+
+  const filtered = videos.filter(v =>
+    (v.title + " " + v.category + " " + v.description).toLowerCase().includes(term)
+  );
+
+  document.getElementById("videoCount").textContent = filtered.length + " VIDEOS";
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty">No videos found. Add videos to Firebase at /vplayer/videos.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(v => `
+    <article class="video-card" onclick="playVideo('${escapeHTML(v.id)}')">
+      <div class="thumb">
+        ${v.thumb ? `<img src="${escapeHTML(v.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">` : `<span class="thumb-fallback">▶</span>`}
+        <span class="play-small"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="duration">${escapeHTML(v.duration || "Video")}</span>
+      </div>
+      <div class="card-body">
+        <span class="category">${escapeHTML(v.category)}</span>
+        <h3>${escapeHTML(v.title)}</h3>
+        <p>${escapeHTML(v.description || "Click to watch this video.")}</p>
+        <div class="card-foot"><span>▶ Free video</span><span class="watch-link">Watch now ↗</span></div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function showFree() {
+  currentTab = "free";
+  document.getElementById("freeTab").classList.add("active");
+  document.getElementById("premiumTab").classList.remove("active");
+  document.getElementById("premiumPanel").classList.remove("show");
+  document.getElementById("listTitle").textContent = "Free videos";
+  document.getElementById("listSubtitle").textContent = "Enjoy all videos available for free.";
+  renderVideos();
+}
+
+function showPremium() {
+  currentTab = "premium";
+  document.getElementById("premiumTab").classList.add("active");
+  document.getElementById("freeTab").classList.remove("active");
+  document.getElementById("premiumPanel").classList.add("show");
+  document.getElementById("listTitle").textContent = "Premium videos";
+  document.getElementById("listSubtitle").textContent = "Exclusive content for premium members.";
+  renderVideos();
+  document.getElementById("premiumPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function openPremium() {
+  showPremium();
+  document.getElementById("videos").scrollIntoView({ behavior: "smooth" });
+}
+
+function goPremium() {
+  if (!PREMIUM_LINK || PREMIUM_LINK.includes("example.com")) {
+    alert("Please add your premium page URL in the PREMIUM_LINK setting.");
+    return;
+  }
+  window.location.href = PREMIUM_LINK;
+}
+
+function playVideo(id) {
+  const v = videos.find(item => item.id === id);
+  if (!v) return;
+
+  const url = v.video.trim();
+  document.getElementById("modalTitle").textContent = v.title;
+
+  if (/youtu\.be\/|youtube\.com\/(watch|shorts|embed)/i.test(url)) {
+    window.open(url, "_blank", "noopener");
+    return;
+  }
+
+  const player = document.getElementById("videoPlayer");
+  player.src = url;
+  document.getElementById("videoModal").classList.add("open");
+  player.play().catch(() => {});
+}
+
+function closePlayer() {
+  const player = document.getElementById("videoPlayer");
+  player.pause();
+  player.removeAttribute("src");
+  player.load();
+  document.getElementById("videoModal").classList.remove("open");
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closePlayer();
+});
+
+loadVideos();
+loadPremiumThumbs();
+</script>
+</body>
+</html>

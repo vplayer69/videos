@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#090d18">
+    <title>VPlay Admin</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #090d18;
+            --panel: #111827;
+            --text: #f5f7fb;
+            --muted: #97a5ba;
+            --line: #ffffff16;
+            --purple: #8063ff
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif
+        }
+
+        button,
+        input {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        .shell {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px
+        }
+
+        header {
+            height: 68px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .nav {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .brand {
+            font: 800 23px Outfit;
+            color: white;
+            text-decoration: none
+        }
+
+        .tag {
+            font-size: 11px;
+            color: #c5b8ff;
+            background: #8063ff22;
+            padding: 8px 11px;
+            border-radius: 20px;
+            font-weight: 800
+        }
+
+        main {
+            padding: 32px 0 60px
+        }
+
+        h1 {
+            font: 800 31px Outfit;
+            margin: 0 0 7px
+        }
+
+        h2 {
+            font: 700 19px Outfit;
+            margin: 0 0 6px
+        }
+
+        p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.65
+        }
+
+        .login,
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 20px
+        }
+
+        .login {
+            max-width: 430px;
+            margin: 35px auto
+        }
+
+        .field {
+            display: grid;
+            gap: 7px;
+            margin: 14px 0
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #cbd4e2
+        }
+
+        .field input {
+            width: 100%;
+            padding: 12px;
+            background: #0b1321;
+            color: white;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            outline: none
+        }
+
+        .field input:focus {
+            border-color: var(--purple)
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 9px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #987dff, #6241e7);
+            color: white;
+            font-weight: 800
+        }
+
+        .full {
+            width: 100%
+        }
+
+        .tabs {
+            display: flex;
+            gap: 7px;
+            background: var(--panel);
+            padding: 5px;
+            border-radius: 11px;
+            width: max-content;
+            margin: 22px 0
+        }
+
+        .tab {
+            border: 0;
+            background: none;
+            color: #9caac0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .tab.active {
+            background: #7657ef;
+            color: white
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: .85fr 1.15fr;
+            gap: 16px;
+            align-items: start
+        }
+
+        .items {
+            display: grid;
+            gap: 9px;
+            margin-top: 14px
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #0b1321;
+            border: 1px solid var(--line);
+            padding: 9px;
+            border-radius: 10px;
+            min-width: 0
+        }
+
+        .item img {
+            width: 70px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 7px;
+            background: #202b40
+        }
+
+        .info {
+            flex: 1;
+            min-width: 0
+        }
+
+        .info b {
+            display: block;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .info small {
+            color: var(--muted);
+            font-size: 10px;
+            overflow-wrap: anywhere
+        }
+
+        .del {
+            border: 0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            background: #3a1d2b;
+            color: #ff9aaa;
+            font-size: 11px;
+            font-weight: 800
+        }
+
+        .count {
+            color: #b9a8ff;
+            font-size: 11px;
+            font-weight: 800
+        }
+
+        .notice {
+            display: none;
+            padding: 11px;
+            border-radius: 9px;
+            font-size: 12px;
+            margin: 14px 0
+        }
+
+        .notice.show {
+            display: block
+        }
+
+        .notice.err {
+            background: #3b1c2b;
+            color: #ffb1be
+        }
+
+        .notice.ok {
+            background: #12372e;
+            color: #91f0cc
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 22px;
+            border: 1px dashed #ffffff25;
+            border-radius: 10px;
+            font-size: 12px
+        }
+
+        .warning {
+            margin-top: 18px;
+            padding: 13px;
+            border: 1px solid #c99c4544;
+            border-radius: 10px;
+            color: #d9c18b;
+            font-size: 11px;
+            line-height: 1.7
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 18px 0;
+            color: #748198;
+            font-size: 11px
+        }
+
+        @media(max-width:740px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        @media(max-width:480px) {
+            .shell {
+                padding: 0 14px
+            }
+
+            h1 {
+                font-size: 27px
+            }
+
+            .tabs {
+                width: 100%
+            }
+
+            .tab {
+                flex: 1;
+                padding: 10px 7px
+            }
+
+            .panel,
+            .login {
+                padding: 16px
+            }
+
+            .item img {
+                width: 60px;
+                height: 46px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="shell nav"><a class="brand" href="#">▶ VPlay</a><span class="tag">ADMIN PANEL</span></div>
+    </header>
+    <main class="shell">
+        <h1>Manage your content</h1>
+        <p>Add and delete free videos and premium thumbnails. All data is stored in Firebase.</p>
+        <div id="notice" class="notice"></div>
+        <section id="loginView" class="login">
+            <h2>Admin sign in</h2>
+            <p>Sign in using your Firebase Authentication email and password.</p>
+            <form id="loginForm">
+                <div class="field"><label>Email address</label><input id="email" type="email" autocomplete="username"
+                        required placeholder="admin@example.com"></div>
+                <div class="field"><label>Password</label><input id="password" type="password"
+                        autocomplete="current-password" required placeholder="Password"></div><button class="btn full"
+                    id="loginBtn">Sign in</button>
+            </form>
+        </section>
+        <section id="app" style="display:none">
+            <div style="display:flex;justify-content:flex-end"><button class="del" onclick="logout()">Log out</button>
+            </div>
+            <div class="tabs"><button class="tab active" id="tabFree" onclick="switchTab('free')">Free
+                    Videos</button><button class="tab" id="tabThumb" onclick="switchTab('thumb')">Premium
+                    Thumbnails</button></div>
+            <section id="freeSection" class="grid">
+                <div class="panel">
+                    <h2>Add free video</h2>
+                    <p>Saved to <b>/vplayer/videos</b>.</p>
+                    <form id="videoForm">
+                        <div class="field"><label>Video title</label><input id="vTitle" required
+                                placeholder="Video title"></div>
+                        <div class="field"><label>Category</label><input id="vCategory" required placeholder="Fun">
+                        </div>
+                        <div class="field"><label>Video URL</label><input id="vVideo" type="url" required
+                                placeholder="https://example.com/video.mp4"></div>
+                        <div class="field"><label>Thumbnail URL</label><input id="vThumb" type="url"
+                                placeholder="https://example.com/thumb.jpg"></div>
+                        <button class="btn full" id="addVideo">＋ Add video</button>
+                    </form>
+                </div>
+                <div class="panel">
+                    <div style="display:flex;justify-content:space-between;gap:8px">
+                        <h2>Free videos</h2><span class="count" id="videoCount">0 VIDEOS</span>
+                    </div>
+                    <div class="items" id="videosList">
+                        <div class="empty">Loading...</div>
+                    </div>
+                </div>
+            </section>
+            <section id="thumbSection" class="grid" style="display:none">
+                <div class="panel">
+                    <h2>Add premium thumbnail</h2>
+                    <p>Saved to <b>/vplayer/primiumThumb</b>.</p>
+                    <form id="thumbForm">
+                        <div class="field"><label>Thumbnail image URL</label><input id="pImage" type="url" required
+                                placeholder="https://example.com/premium.jpg"></div>
+                        <div class="field"><label>Total videos</label><input id="pTotal" type="number" min="0" step="1"
+                                required placeholder="5"></div>
+                        <button class="btn full" id="addThumb">＋ Add premium thumbnail</button>
+                    </form>
+                </div>
+                <div class="panel">
+                    <div style="display:flex;justify-content:space-between;gap:8px">
+                        <h2>Premium thumbnails</h2><span class="count" id="thumbCount">0 ITEMS</span>
+                    </div>
+                    <div class="items" id="thumbsList">
+                        <div class="empty">Loading...</div>
+                    </div>
+                </div>
+            </section>
+            <div class="warning">Security: enable Email/Password in Firebase Authentication and use the database rules
+                below to restrict writes to your admin account. Never allow public database writes.</div>
+        </section>
+    </main>
+    <footer>
+        <div class="shell">© <span id="year"></span> VPlay Admin</div>
+    </footer>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script>
+            /* Paste the same Firebase Web App config used by your main website. */
+const firebaseConfig = {
+  apiKey: "AIzaSyCylaiKXjXOS9Cfk9O1fcpDGogdY7_gEcA",
+  authDomain: "solo-37a1b.firebaseapp.com",
+  databaseURL: "https://vplayer.firebaseio.com/",
+  projectId: "solo-37a1b",
+  storageBucket: "solo-37a1b.firebasestorage.app",
+  messagingSenderId: "460941218315",
+  appId: "1:460941218315:web:c9dde6fe291dbdcd06ad0e",
+  measurementId: "G-N6705R9EMZ"
+};
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth(), db = firebase.database();
+            const videosRef = db.ref("vplayer/videos"), thumbsRef = db.ref("vplayer/primiumThumb");
+            let videoData = {}, thumbData = {};
+            function msg(t, err = false) { const n = document.getElementById("notice"); n.textContent = t; n.className = "notice show " + (err ? "err" : "ok"); }
+            function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+            auth.onAuthStateChanged(user => { document.getElementById("loginView").style.display = user ? "none" : "block"; document.getElementById("app").style.display = user ? "block" : "none"; if (user) listen(); });
+            document.getElementById("loginForm").addEventListener("submit", async e => { e.preventDefault(); const b = document.getElementById("loginBtn"); b.disabled = true; b.textContent = "Signing in..."; try { await auth.signInWithEmailAndPassword(email.value.trim(), password.value); msg("Signed in successfully."); } catch (x) { msg(x.message, true); } finally { b.disabled = false; b.textContent = "Sign in"; } });
+            async function logout() { try { await auth.signOut(); msg("Signed out."); } catch (e) { msg(e.message, true); } }
+            let listening = false;
+            function listen() { if (listening) return; listening = true; videosRef.on("value", s => { videoData = s.val() || {}; renderVideos(); }, e => msg(e.message, true)); thumbsRef.on("value", s => { thumbData = s.val() || {}; renderThumbs(); }, e => msg(e.message, true)); }
+            function switchTab(t) { const f = t === "free"; freeSection.style.display = f ? "grid" : "none"; thumbSection.style.display = f ? "none" : "grid"; tabFree.classList.toggle("active", f); tabThumb.classList.toggle("active", !f); }
+            document.getElementById("videoForm").addEventListener("submit", async e => { e.preventDefault(); const b = document.getElementById("addVideo"); b.disabled = true; b.textContent = "Adding..."; try { await videosRef.push({ title: vTitle.value.trim(), category: vCategory.value.trim(), video: vVideo.value.trim(), thumb: vThumb.value.trim() }); e.target.reset(); msg("Free video added."); } catch (x) { msg(x.message, true); } finally { b.disabled = false; b.textContent = "＋ Add video"; } });
+            document.getElementById("thumbForm").addEventListener("submit", async e => { e.preventDefault(); const total = Number(pTotal.value); if (!Number.isInteger(total) || total < 0) return msg("Enter a valid video count.", true); const b = document.getElementById("addThumb"); b.disabled = true; b.textContent = "Adding..."; try { await thumbsRef.push({ image: pImage.value.trim(), totalVideos: total }); e.target.reset(); msg("Premium thumbnail added."); } catch (x) { msg(x.message, true); } finally { b.disabled = false; b.textContent = "＋ Add premium thumbnail"; } });
+            function renderVideos() { const a = Object.entries(videoData); videoCount.textContent = a.length + " VIDEOS"; videosList.innerHTML = a.length ? a.map(([id, v]) => `<div class="item"><img src="${esc(v.thumb || "")}" onerror="this.style.display='none'"><div class="info"><b>${esc(v.title || "Untitled")}</b><small>${esc(v.category || "Video")} · ${esc(id)}</small></div><button class="del" onclick="removeVideo('${esc(id)}')">Delete</button></div>`).join("") : '<div class="empty">No free videos added yet.</div>'; }
+            function renderThumbs() { const a = Object.entries(thumbData); thumbCount.textContent = a.length + " ITEMS"; thumbsList.innerHTML = a.length ? a.map(([id, v]) => `<div class="item"><img src="${esc(v.image || "")}" onerror="this.style.display='none'"><div class="info"><b>${Number(v.totalVideos) || 0} videos</b><small>Premium thumbnail · ${esc(id)}</small></div><button class="del" onclick="removeThumb('${esc(id)}')">Delete</button></div>`).join("") : '<div class="empty">No premium thumbnails added yet.</div>'; }
+            async function removeVideo(id) { if (!confirm("Delete this video?")) return; try { await videosRef.child(id).remove(); msg("Video deleted."); } catch (e) { msg(e.message, true); } }
+            async function removeThumb(id) { if (!confirm("Delete this premium thumbnail?")) return; try { await thumbsRef.child(id).remove(); msg("Premium thumbnail deleted."); } catch (e) { msg(e.message, true); } }
+   cument.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>
